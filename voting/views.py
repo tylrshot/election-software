@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 
 from .models import Greeting
 
@@ -8,9 +9,12 @@ import os
 
 # Create your views here.
 def index(request):
-    times = int(os.environ.get('TIMES',3))
-    return HttpResponse('Hello! ' * times)
+    
+    return render(request, 'voting/index.html')
 
+def profile(request):
+    
+    return render(request, 'voting/profile.html')
 
 
 def db(request):
