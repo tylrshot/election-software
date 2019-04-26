@@ -71,7 +71,9 @@ def poll(request, poll_id):
         
     pollName = thisPoll.name
         
-    questions = Question.objects.filter(poll=thisPoll)
+    questions = Question.objects.filter(poll=thisPoll).order_by('questionOrder')
+    
+    '''
     numQuestions = range(len(questions))
     
     questionsAndChoices = []
@@ -89,6 +91,8 @@ def poll(request, poll_id):
             tempQuestion.append(choiceName)
         newQuestionsAndChoices.append(tempQuestion)
         
-    args = {'pollName':pollName, 'user':user, 'questionsAndChoices':questionsAndChoices, 'numQuestions':numQuestions, 'questions': questions, 'newQuestionsAndChoices':newQuestionsAndChoices}
+    '''
+        
+    args = {'pollName':pollName, 'user':user, 'questions': questions}
     return render(request, 'voting/poll.html', args)
 

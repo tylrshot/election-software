@@ -33,10 +33,16 @@ class Poll(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300, blank=True)
     
+    def __str__(self):
+        return '{0}'.format(self.name)
+    
 class Question(models.Model):
     poll = models.ForeignKey('Poll', models.CASCADE)
     name = models.CharField(max_length=100)
     questionOrder = models.IntegerField(default=0)
+    
+    choices = ArrayField(models.CharField(max_length=100), null=True)
+    choicesAccepted = models.IntegerField(default=1)
     
     #Question Types
     MULTI_CHOICE = 'MC'
@@ -54,12 +60,18 @@ class Question(models.Model):
     )
     #result =
     
+    def __str__(self):
+        return '{0}'.format(self.name)
+    
 class Choice(models.Model):
     question = models.ForeignKey('Question', models.CASCADE)
     name = models.CharField(max_length=100)
     choiceOrder = models.IntegerField(default=0)
     
     votes = models.IntegerField(default=0, blank=True)
+    
+    def __str__(self):
+        return '{0}'.format(self.name)
     
     
 class Response(models.Model):

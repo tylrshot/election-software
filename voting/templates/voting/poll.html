@@ -1,15 +1,27 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+<!--
+{% load custom_tags %}
+-->
+
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 {% if user.is_authenticated %}
     Hi {{ user.username }}!
     <p><a href="{% url 'logout' %}">logout</a></p>
 
 
- <h1>{{pollName}}</h1> {% for x in numQuestions %}
+ <h1>{{pollName}}</h1> 
+<!--
+{% for x in numQuestions %}
 
     {{x}}
 
@@ -36,6 +48,11 @@
 {{newQuestionsAndChoices}}
 
 <br><br>
+
+-->
+
+<!--
+
 <select>
 <option>a</option>
     <option>b</option>
@@ -44,6 +61,102 @@
 <input type="radio" name="poll" value="a" /> A <br>
 <input type="radio" name="poll" value="b" /> B <br>
 <input type="radio" name="poll" value="c" /> C 
+
+
+<script type="text/javascript">
+$(document).ready(function () {
+   $("input[name='Person']").change(function () {
+      var maxAllowed = 2;
+      var cnt = $("input[name='Person']:checked").length;
+      if (cnt > maxAllowed) 
+      {
+         $(this).prop("checked", "");
+         alert('Select maximum ' + maxAllowed + ' people!');
+     }
+  });
+});
+</script>
+
+<div class="check-boxes">
+          <p><strong>Which person would you like? (Select 2 Levels)</strong></p>
+          <input class="single-checkbox"type="checkbox" name="Person">Person 1<br>
+    <input class="single-checkbox"type="checkbox" name="Person">Person 2<br>
+    <input class="single-checkbox"type="checkbox" name="Person">Person 3<br>
+    <input class="single-checkbox"type="checkbox" name="Person">Person 4<br>
+        </div>
+
+-->
+
+
+
+{% for Question in questions %}
+
+    <h3>{{Question.name}}</h3>
+
+{% if Question.questionType == "MC" %} 
+    <div class="multiple-choice">
+    {% for x in Question.choices %}
+        <input class="mc-question" type="radio" name="Question-{{Question.questionOrder}}" />{{x}}<br>
+    {% endfor %}
+    </div>
+
+{% else %}  
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+       $("input[name='Question-{{Question.questionOrder}}']").change(function () {
+          var maxAllowed = {{Question.choicesAccepted}};
+          var cnt = $("input[name='Question-{{Question.questionOrder}}']:checked").length;
+          if (cnt > maxAllowed) 
+          {
+             $(this).prop("checked", "");
+             alert('Select maximum ' + maxAllowed + ' people!');
+         }
+      });
+    });
+    </script>
+    
+    <div class="check-box">
+    {% for x in Question.choices %}
+        <input class="single-checkbox"type="checkbox" name="Question-{{Question.questionOrder}}">{{x}}<br>
+    {% endfor %}
+
+    </div>
+{% endif %}
+
+<br>
+
+{% endfor %}
+
+<!--
+
+    
+<script type="text/javascript">
+$(document).ready(function () {
+   $("input[name='{{questionNumber}}']").change(function () {
+      var maxAllowed = {{numAccepted}};
+      var cnt = $("input[name='{{questionNumber}}']:checked").length;
+      if (cnt > maxAllowed) 
+      {
+         $(this).prop("checked", "");
+         alert('Select maximum ' + maxAllowed + ' people!');
+     }
+  });
+});
+</script>
+
+<div class="check-boxes">
+    <p><strong>Question Description Goes Here</strong></p>
+    <input class="single-checkbox"type="{{buttonStyle}}" name="{{questionNumber}}">Person 1<br>
+    <input class="single-checkbox"type="{{buttonStyle}}" name="{{questionNumber}}">Person 2<br>
+    <input class="single-checkbox"type="{{buttonStyle}}" name="{{questionNumber}}">Person 3<br>
+</div>
+
+
+
+
+
+-->
 
 
 
