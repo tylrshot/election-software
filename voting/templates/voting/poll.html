@@ -6,7 +6,7 @@
 {% load custom_tags %}
 -->
 
-{% block title %}Profile{% endblock %}
+{% block title %}Vote{% endblock %}
 
 {% block content %}
 
@@ -87,6 +87,7 @@ $(document).ready(function () {
 
 -->
 
+<form action="submit{{user.id}}" method="post">{% csrf_token %}
 
 
 {% for Question in questions %}
@@ -96,7 +97,7 @@ $(document).ready(function () {
 {% if Question.questionType == "MC" %} 
     <div class="multiple-choice">
     {% for x in Question.choices %}
-        <input class="mc-question" type="radio" name="Question-{{Question.questionOrder}}" />{{x}}<br>
+        <input class="mc-question" type="radio" name="{{Question.id}}" value="{{x}}" />{{x}}<br>
     {% endfor %}
     </div>
 
@@ -104,9 +105,9 @@ $(document).ready(function () {
 
     <script type="text/javascript">
     $(document).ready(function () {
-       $("input[name='Question-{{Question.questionOrder}}']").change(function () {
+       $("input[name='{{Question.id}}']").change(function () {
           var maxAllowed = {{Question.choicesAccepted}};
-          var cnt = $("input[name='Question-{{Question.questionOrder}}']:checked").length;
+          var cnt = $("input[name='{{Question.id}}']:checked").length;
           if (cnt > maxAllowed) 
           {
              $(this).prop("checked", "");
@@ -118,7 +119,7 @@ $(document).ready(function () {
     
     <div class="check-box">
     {% for x in Question.choices %}
-        <input class="single-checkbox"type="checkbox" name="Question-{{Question.questionOrder}}">{{x}}<br>
+        <input class="single-checkbox"type="checkbox" name="{{Question.id}}" value="{{x}}">{{x}}<br>
     {% endfor %}
 
     </div>
@@ -158,6 +159,8 @@ $(document).ready(function () {
 
 -->
 
+<input type="submit">
+    </form>
 
 
 {% else %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 
 from .models import User, UserInfo, Poll, Question, Group, Student, Choice
@@ -57,6 +57,52 @@ def profile(request):
     args = {'user':user, 'grade':grade, 'polls':polls}
 
     return render(request, 'voting/profile.html', args)
+
+def error(request):
+    return render(request, 'voting/failed.html')
+
+def submit(request, poll_id, user_id):
+    user = request.user
+    if user.id != user_id:
+        return HttpResponseRedirect('responseError')
+    
+    if request.method == 'POST':
+        submission = request.POST
+    else:
+        return HttpResponseRedirect('responseError')
+    
+    #{[question id, response 1], [question id, response 1, response 2]}
+    responses = []
+    for x in submission:
+        if x != 'csrfmiddlewaretoken':
+            currentResponse = [x]
+            currentData = submission.getlist(x)
+            
+            #If the question has a submission with more than 1 response, checks if it is the correct number responses for the question
+            print(currentData)
+            currentLength = currentData.__len__()
+            if currentLength > 0:
+                maxLength = Question.objects.get(id=x).choicesAccepted
+                print(maxLength)
+                print(currentLength)
+                if currentLength > maxLength:
+                    return HttpResponseRedirect('/responseError')
+                
+            #Appends response in array
+            for x in currentData:
+                currentResponse.append(x)
+                
+            responses.append(currentResponse)
+            
+    print(responses)
+            #print(x)
+            #print(submission.get(x))
+    
+    #info = submission
+    info = submission
+    
+    args = {'info':info}
+    return render(request, 'voting/submit.html', args)
 
 def poll(request, poll_id):
     user = request.user
