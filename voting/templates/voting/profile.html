@@ -9,12 +9,15 @@
     <p><a href="{% url 'logout' %}">logout</a></p>
 
 
-    <h1>Profile</h1>
+ <h1>Active Elections:</h1> {% for Poll in polls %}
+        <h2><a href="/poll/{{Poll.id}}/">{{ Poll.name }}</a> - Ends {{ Poll.endTime }}</h2>
+            <p>
+                {{Poll.description}}    
+            </p>
+            
 
 
-
-
-
+        {% endfor %}
 
 
 

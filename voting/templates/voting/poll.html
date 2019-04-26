@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <p><a href="{% url 'logout' %}">logout</a></p>
+
+
+ <h1>{{pollName}}</h1> {% for x in numQuestions %}
+
+    {{x}}
+
+
+    {% with currentQuestion=questions.x %}
+        
+        <h3> {{currentQuestion.name}} </h3>
+
+           {% with choices=questionsAndChoices.x %}
+
+            {% for Choice in choices %}
+
+            <select>
+                <option>{{Choice.name}}</option>
+            </select>
+        {% endfor %}
+
+        {% endwith %}
+            
+        {% endwith %}
+
+        {% endfor %}
+
+{{newQuestionsAndChoices}}
+
+<br><br>
+<select>
+<option>a</option>
+    <option>b</option>
+</select>
+<br>
+<input type="radio" name="poll" value="a" /> A <br>
+<input type="radio" name="poll" value="b" /> B <br>
+<input type="radio" name="poll" value="c" /> C 
+
+
+
+{% else %}
+    <p>You must login to view this page.</p>
+    <a href="{% url 'login' %}">login</a>
+{% endif %}
+
+{% endblock %}

@@ -2,9 +2,11 @@ from django.contrib import admin
 
 # Register your models here.
 
-from voting.models import Poll, Question, Group, Student, UserVotes
+from voting.models import Poll, Question, Group, Student, UserInfo, Choice
 
 admin.site.register(Poll)
 admin.site.register(Question)
 admin.site.register(Student)
-admin.site.register(UserVotes)
+admin.site.register(Group)
+admin.site.register(UserInfo)
+admin.site.register(Choice)

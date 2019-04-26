@@ -5,33 +5,38 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
-class Greeting(models.Model):
-    when = models.DateTimeField("date created", auto_now_add=True)
-    
-    
-class UserVotes(models.Model):
+
+class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    gradeLevel = models.IntegerField(blank=True, null=True)
     votedIN = ArrayField(models.IntegerField(default=0, blank=True), blank=True, null=True)
     
 @receiver(post_save, sender=User)
-def create_user_uservotes(sender, instance, created, **kwargs):
+def create_user_userinfo(sender, instance, created, **kwargs):
     if created:
-        UserVotes.objects.create(user=instance)
+        UserInfo.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
-def save_user_uservotes(sender, instance, **kwargs):
-    instance.uservotes.save()
+def save_user_userinfo(sender, instance, **kwargs):
+    instance.userinfo.save()
     
     
 class Poll(models.Model):
+    createdAt = models.DateTimeField(auto_now_add=True, null=True)
+    
     active = models.BooleanField(default=False)
+    startTime = models.DateTimeField(blank=True, null=True)
+    endTime = models.DateTimeField(blank=True, null=True)
+    
     groupsAllowed = models.ManyToManyField('Group', blank=True, default='None')
+    
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=300)
+    description = models.CharField(max_length=300, blank=True)
     
 class Question(models.Model):
     poll = models.ForeignKey('Poll', models.CASCADE)
     name = models.CharField(max_length=100)
+    questionOrder = models.IntegerField(default=0)
     
     #Question Types
     MULTI_CHOICE = 'MC'
@@ -47,8 +52,23 @@ class Question(models.Model):
         choices=QUESTION_TYPES,
         default=MULTI_CHOICE,
     )
-    #result = 
+    #result =
     
+class Choice(models.Model):
+    question = models.ForeignKey('Question', models.CASCADE)
+    name = models.CharField(max_length=100)
+    choiceOrder = models.IntegerField(default=0)
+    
+    votes = models.IntegerField(default=0, blank=True)
+    
+    
+class Response(models.Model):
+    dateTime = models.DateTimeField(auto_now_add=True, null=True)
+    
+    user = models.ForeignKey(User, models.CASCADE)
+    poll = models.ForeignKey('Poll', models.CASCADE)
+    #[Question order, Choice order, Question order, Choice order]
+    response = ArrayField(models.IntegerField(default=0, blank=True), blank=True, null=True)
     
     
 class Group(models.Model):
