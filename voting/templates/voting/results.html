@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <p><a href="{% url 'logout' %}">logout</a></p>
+
+{% if userIsAdmin %}
+    <h2>Results for {{poll.name}}</h2>
+
+
+{% for question in responsesToPrint %}
+    <h3>{{question.0}}</h3>
+    
+    {% with question|slice:"1:" as question %}
+        {% for x in question %}
+            {% for i in x %}
+                <p>{{i.1}} - {{i.0}}</p>
+            {% endfor %}
+        {% endfor %}
+    {% endwith %}
+
+
+{% endfor %}
+
+
+{% else %}
+Admins Only. <a href="/profile">Back</a>
+{% endif %}
+
+<br>
+
+<a href="/electionAdmin">Admin Home</a>
+
+{% else %}
+    <p>You must login to view this page.</p>
+    <a href="{% url 'login' %}">login</a>
+{% endif %}
+
+{% endblock %}

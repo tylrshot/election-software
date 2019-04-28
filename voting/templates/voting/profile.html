@@ -8,6 +8,10 @@
     Hi {{ user.username }}!
     <p><a href="{% url 'logout' %}">logout</a></p>
 
+{% if userIsAdmin %}
+        <p><a href="/electionAdmin">Admin</a></p>
+    {% endif %}
+
 
  <h1>Active Elections:</h1> {% for Poll in polls %}
         <h2><a href="/poll/{{Poll.id}}/">{{ Poll.name }}</a> - Ends {{ Poll.endTime }}</h2>

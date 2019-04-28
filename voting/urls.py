@@ -6,7 +6,10 @@ urlpatterns = [
     
     path('responseError', views.error, name='error'),
     
-    path('poll/<int:poll_id>/submit<int:user_id>', views.submit, name='submit'),
+    path('electionAdmin', views.electionAdmin, name='electionAdmin'),
+    path('electionAdmin/poll/<int:poll_id>', views.electionAdminResults, name='electionAdminResults'),
+    
+    path('poll/<int:poll_id>/submit/<int:maxChoicesAccepted>', views.submit, name='submit'),
     path('poll/<int:poll_id>/', views.poll, name='poll'),
     path('profile', views.profile, name='profile'),
     #path('login', views.login, name='login'),

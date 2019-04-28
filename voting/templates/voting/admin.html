@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <p><a href="{% url 'logout' %}">logout</a></p>
+
+{% if userIsAdmin %}
+    <h2>Admin View</h2>
+    
+
+{% for Poll in polls %}
+
+    <h3>{{Poll.name}}</h3>
+    <p>Description: {{Poll.description}}</p>  
+    <p>Start: {{Poll.startTime}}</p>
+    <p>End: {{Poll.endTime}}</p>
+    <a href="/electionAdmin/poll/{{Poll.id}}">Generate Results</a>
+    
+
+{% endfor %}
+
+
+
+
+
+{% else %}
+Admins Only. <a href="/profile">Back</a>
+{% endif %}
+
+{% else %}
+    <p>You must login to view this page.</p>
+    <a href="{% url 'login' %}">login</a>
+{% endif %}
+
+{% endblock %}

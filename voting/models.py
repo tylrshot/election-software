@@ -10,6 +10,7 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gradeLevel = models.IntegerField(blank=True, null=True)
     votedIN = ArrayField(models.IntegerField(default=0, blank=True), blank=True, null=True)
+    admin = models.BooleanField(default=False)
     
 @receiver(post_save, sender=User)
 def create_user_userinfo(sender, instance, created, **kwargs):
@@ -80,7 +81,7 @@ class Response(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     poll = models.ForeignKey('Poll', models.CASCADE)
     #[Question order, Choice order, Question order, Choice order]
-    response = ArrayField(models.IntegerField(default=0, blank=True), blank=True, null=True)
+    response = ArrayField(ArrayField(models.CharField(max_length=100, blank=True), blank=True, null=True), blank=True, null=True)
     
     
 class Group(models.Model):

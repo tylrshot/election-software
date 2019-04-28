@@ -87,7 +87,7 @@ $(document).ready(function () {
 
 -->
 
-<form action="submit{{user.id}}" method="post">{% csrf_token %}
+<form action="submit/{{maxLength}}" method="post">{% csrf_token %}
 
 
 {% for Question in questions %}
