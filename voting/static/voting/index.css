@@ -20,8 +20,8 @@ table {
 
 @media screen and (max-width: 1024px) {
     body {
-        zoom: 150%;
-        -moz-transform: scale(1.5);
+        zoom: 140%;
+        -moz-transform: scale(1.4);
         width: 90%;
     }
 }
