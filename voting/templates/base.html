@@ -5,6 +5,7 @@
   <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'voting/index.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     
 </head>
 <body>
@@ -14,15 +15,12 @@
       
       <table>
       
-    <th>Hi {{ user.username }}!</th>
-    <th><a href="/profile">Profile</a></th>
-    
-      
-      {% if userIsAdmin %}
-        <th><a href="/electionAdmin">Admin</a></th>
-    {% endif %}
+          <th>Hi {{ user.username }}!</th>
+          <th><a href="/profile">Profile</a></th>
           <th><a href="{% url 'logout' %}">logout</a></th>
-          </table>
+        </table>
+      
+      
       
     {% block content %}
     {% endblock %}

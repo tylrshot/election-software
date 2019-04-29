@@ -1,6 +1,8 @@
 main {
     font-family: sans-serif;
     color: while;
+    zoom: 110%;
+    -moz-transform: scale(1.1);
 }
 
 html {
@@ -14,6 +16,14 @@ th, td {
 
 table {
   border-spacing: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+    body {
+        zoom: 150%;
+        -moz-transform: scale(1.5);
+        width: 90%;
+    }
 }
 
 /* Input Style */
