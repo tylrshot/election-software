@@ -18,11 +18,27 @@ def index(request):
     
     return render(request, 'voting/index.html')
 
+def importUsers(request):
+    
+    user = request.user
+    
+    #Gets extra info on user
+    userInfo = UserInfo.objects.get(user=user)
+    userIsAdmin = False
+    if userInfo.admin == True:
+        
+        return HttpResponseRedirect('/profile')
+        
+    else:
+    
+        return render(request, 'voting/failed.html')
+
 def electionAdmin(request):
     user = request.user
     
     #Gets extra info on user
     userInfo = UserInfo.objects.get(user=user)
+    userIsAdmin = False
     if userInfo.admin == True:
         userIsAdmin = True
         
@@ -92,8 +108,10 @@ def profile(request):
     
     #Gets extra info on user
     userInfo = UserInfo.objects.get(user=user)
+    userIsAdmin = False
     if userInfo.admin == True:
         userIsAdmin = True
+        
     
     #Determines user grade/group
     grade = userInfo.gradeLevel

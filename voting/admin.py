@@ -26,14 +26,16 @@ admin.site.register(UserInfo, UserInfoAdmin)
 admin.site.register(Choice)
 admin.site.register(Response)
 
+admin.site.unregister(User)
+
 class UserResource(resources.ModelResource):
     class Meta:
         model = UserInfo
-        fields = ('email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'password',)
 
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
     list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
 
-admin.site.unregister(User)
+
 admin.site.register(User, UserAdmin)
