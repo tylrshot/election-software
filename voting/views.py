@@ -48,7 +48,7 @@ def electionAdminResults(request, poll_id):
     
     #Creates array with question IDs in poll
     questionIDs = []
-    questions = Question.objects.filter(poll=poll)
+    questions = Question.objects.filter(poll=poll).order_by('questionOrder')
     for q in questions:
         questionIDs.append(q.id)
     
@@ -65,8 +65,7 @@ def electionAdminResults(request, poll_id):
             for r in tempResponse:
                 if r[0] == qID:
                     for i in r[1:]:
-#FIXME 0 -> null
-                        if i != '0':
+                        if i != 'null':
                             thisQuestionResponses.append(i)
         allPollResponses.append(thisQuestionResponses)
     
@@ -168,40 +167,13 @@ def submit(request, poll_id, maxChoicesAccepted):
             
     #Create instance in Response model
     Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
-    Response.objects.create(user=user, poll=poll, response=responses)
     
     #Adds poll to user's votedIN
     userInfo.votedIN.append(poll_id)
 #FIXME uncomment
-    #userInfo.save()
+    userInfo.save()
     
+#FIXME remove comment
     #logout(request)
     return HttpResponseRedirect('/')
 
@@ -228,25 +200,6 @@ def poll(request, poll_id):
     print(maxLengthFinder)
     maxLength = maxLengthFinder[0].choicesAccepted + 1
     
-    '''
-    numQuestions = range(len(questions))
-    
-    questionsAndChoices = []
-    for x in questions:
-        choices = Choice.objects.filter(question=x)
-        questionsAndChoices.append(choices)
-        
-    newQuestionsAndChoices = []
-    for x in questions:
-        choices = Choice.objects.filter(question=x)
-        questionName = x.name
-        tempQuestion = [questionName]
-        for x in choices:
-            choiceName = x.name
-            tempQuestion.append(choiceName)
-        newQuestionsAndChoices.append(tempQuestion)
-        
-    '''
         
     args = {'pollName':pollName, 'user':user, 'questions': questions, 'maxLength':maxLength}
     return render(request, 'voting/poll.html', args)

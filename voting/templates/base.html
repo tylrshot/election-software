@@ -3,11 +3,35 @@
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'voting/index.css' %}">
+    
 </head>
 <body>
   <main>
+      
+      {% if user.is_authenticated %}
+      
+      <table>
+      
+    <th>Hi {{ user.username }}!</th>
+    <th><a href="/profile">Profile</a></th>
+    
+      
+      {% if userIsAdmin %}
+        <th><a href="/electionAdmin">Admin</a></th>
+    {% endif %}
+          <th><a href="{% url 'logout' %}">logout</a></th>
+          </table>
+      
     {% block content %}
     {% endblock %}
+      
+      {% else %}
+    <p>You must login to view this page.</p>
+    <a href="{% url 'login' %}">login</a>
+{% endif %}
+      
   </main>
 </body>
 </html>

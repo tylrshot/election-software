@@ -4,30 +4,18 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-    Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">logout</a></p>
 
-{% if userIsAdmin %}
-        <p><a href="/electionAdmin">Admin</a></p>
-    {% endif %}
 
 
  <h1>Active Elections:</h1> {% for Poll in polls %}
-        <h2><a href="/poll/{{Poll.id}}/">{{ Poll.name }}</a> - Ends {{ Poll.endTime }}</h2>
+        <h2><a href="/poll/{{Poll.id}}/">{{ Poll.name }}</a></h2>
+        <p><b>Expires:</b> {{ Poll.endTime }}</p>
             <p>
-                {{Poll.description}}    
+                <b>Description: </b>{{Poll.description}}    
             </p>
             
 
 
         {% endfor %}
-
-
-
-{% else %}
-    <p>You must login to view this page.</p>
-    <a href="{% url 'login' %}">login</a>
-{% endif %}
 
 {% endblock %}

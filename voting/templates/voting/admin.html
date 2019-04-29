@@ -4,9 +4,6 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-    Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">logout</a></p>
 
 {% if userIsAdmin %}
     <h2>Admin View</h2>
@@ -31,9 +28,5 @@
 Admins Only. <a href="/profile">Back</a>
 {% endif %}
 
-{% else %}
-    <p>You must login to view this page.</p>
-    <a href="{% url 'login' %}">login</a>
-{% endif %}
 
 {% endblock %}
