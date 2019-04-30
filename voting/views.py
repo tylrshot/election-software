@@ -251,7 +251,7 @@ def submit(request, poll_id, maxChoicesAccepted):
     
 #FIXME remove comment
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/success')
 
 def poll(request, poll_id):
     user = request.user
