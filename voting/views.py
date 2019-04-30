@@ -28,6 +28,54 @@ def success(request):
     
     return render(request, 'voting/success.html')
 
+def newUser(request):
+    user = request.user
+    
+    #Gets extra info on user
+    userInfo = UserInfo.objects.get(user=user)
+    userIsAdmin = False
+    if userInfo.admin == True:
+        userIsAdmin = True
+        
+    if userIsAdmin == False:
+        return HttpResponseRedirect('/profile')
+    
+    message = 'Nothing to show.'
+    
+    args = {'userIsAdmin':userIsAdmin, 'message':message}
+    
+    return render(request, 'voting/newUser.html', args)
+
+def createNewUser(request):
+    user = request.user
+    
+    #Gets extra info on user
+    userInfo = UserInfo.objects.get(user=user)
+    userIsAdmin = False
+    if userInfo.admin == True:
+        userIsAdmin = True
+        
+    if userIsAdmin == False:
+        return HttpResponseRedirect('/profile')
+    
+    if request.method == 'POST':
+        submission = request.POST
+    else:
+        return HttpResponseRedirect('/responseError')
+    
+    newUser = User.objects.create_user(submission['GTID'], 'student@lumpkinschools.com', submission['LastName'])
+    newUser.save()
+    newUserInfo = UserInfo.objects.get(user=newUser)
+    newUserInfo.gradeLevel = submission['Grade']
+    newUserInfo.votedIN = [0]
+    newUserInfo.save()
+    
+    message = 'New user created: ' + submission['GTID'] + ' with password ' + submission['LastName'] + ' and grade ' + submission['Grade']
+    
+    args = {'userIsAdmin':userIsAdmin, 'message':message}
+    
+    return render(request, 'voting/newUser.html', args)
+
 def importUsers(request, key):
     
     user = request.user

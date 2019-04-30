@@ -5,11 +5,11 @@
 {% block content %}
 
 {% if userIsAdmin %}
-        <p><a href="/electionAdmin">Admin</a> - <a href="/admin">Create Questions</a></p>
+        <p><a href="/electionAdmin">Admin</a> - <a href="/admin">Database</a> - <a href="/newUser">New User</a></p>
     {% endif %}
 
 
-
+<p><b>Grade Level:</b> {{grade}}</p>
  <h1>Active Elections:</h1> {% for Poll in polls %}
         <h2><a href="/poll/{{Poll.id}}/">{{ Poll.name }}</a></h2>
         <p><b>Expires:</b> {{ Poll.endTime }}</p>

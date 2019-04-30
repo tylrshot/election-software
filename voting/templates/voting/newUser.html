@@ -1,0 +1,38 @@
+{% extends 'base.html' %} 
+
+{% block title %}New User{% endblock %}
+
+{% block content %}
+
+
+{% if userIsAdmin %}
+    <h2>New User</h2>
+
+<p><b>Message:</b> {{message}}</p>
+    
+
+<form action="createNewUser" method="post">{% csrf_token %}
+    
+    <p>GTID</p>
+    <input type="text" name="GTID">
+    
+    <p>Last Name</p>
+    <input type="text" name="LastName">
+    
+    <p>Grade Level #</p>
+    <input type="text" name="Grade"><br>
+    
+    <input type="submit">
+    
+</form>
+
+
+
+
+
+{% else %}
+Admins Only. <a href="/profile">Back</a>
+{% endif %}
+
+
+{% endblock %}

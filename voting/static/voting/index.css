@@ -26,6 +26,12 @@ table {
     }
 }
 
+@media screen and (max-width: 390px) {
+    th, td {
+        font-size: 11px;
+    }
+}
+
 /* Input Style */
 
 .container {
