@@ -8,9 +8,12 @@ from django.dispatch import receiver
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    gradeLevel = models.IntegerField(blank=True, null=True)
+    gradeLevel = models.IntegerField(blank=True, null=True, default=1)
     votedIN = ArrayField(models.IntegerField(default=0, blank=True), blank=True, null=True)
     admin = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return '{0}'.format(self.user)
     
 @receiver(post_save, sender=User)
 def create_user_userinfo(sender, instance, created, **kwargs):
@@ -22,10 +25,12 @@ def save_user_userinfo(sender, instance, **kwargs):
     instance.userinfo.save()
     
     
+    
+    
 class Poll(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True, null=True)
     
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     startTime = models.DateTimeField(blank=True, null=True)
     endTime = models.DateTimeField(blank=True, null=True)
     
@@ -47,11 +52,9 @@ class Question(models.Model):
     
     #Question Types
     MULTI_CHOICE = 'MC'
-    RANKED = 'RA'
     TOPX = 'TX'
     QUESTION_TYPES = (
         (MULTI_CHOICE, 'Multiple Choice'),
-        (RANKED, 'Ranked'),
         (TOPX, 'Top X'),
     )
     questionType = models.CharField(
@@ -64,6 +67,7 @@ class Question(models.Model):
     def __str__(self):
         return '{0}'.format(self.name)
     
+'''
 class Choice(models.Model):
     question = models.ForeignKey('Question', models.CASCADE)
     name = models.CharField(max_length=100)
@@ -73,6 +77,7 @@ class Choice(models.Model):
     
     def __str__(self):
         return '{0}'.format(self.name)
+'''
     
     
 class Response(models.Model):
@@ -86,7 +91,12 @@ class Response(models.Model):
     
 class Group(models.Model):
     name = models.CharField(max_length=100)
-    students = models.ManyToManyField('Student', blank=True, default='None')
+    #students = models.ManyToManyField('Student', blank=True, default='None')
+    
+    def __str__(self):
+        return '{0}'.format(self.name)
+    
+'''
     
 class Student(models.Model):
     firstName = models.CharField(max_length=35)
@@ -106,6 +116,8 @@ class Student(models.Model):
         null=True,
         blank=True,
     )
+    
+'''
     
 
     

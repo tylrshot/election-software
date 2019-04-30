@@ -5,7 +5,7 @@ from import_export import resources
 
 # Register your models here.
 
-from voting.models import Poll, Question, Group, Student, UserInfo, Choice, Response
+from voting.models import Poll, Question, Group, UserInfo, Response
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -16,15 +16,26 @@ class UserInfoResource(resources.ModelResource):
         fields = ('user', 'gradeLevel',)
 
 class UserInfoAdmin(ImportExportModelAdmin):
+    list_display = ('user', 'gradeLevel', 'admin', 'id')
     resource_class = UserInfoResource
+    
+class PollAdmin(admin.ModelAdmin):
+    list_display = ('name', 'id', 'startTime', 'endTime', 'active')
+    pass
 
-admin.site.register(Poll)
-admin.site.register(Question)
-admin.site.register(Student)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'poll', 'id', 'questionType', 'choicesAccepted', 'questionOrder')
+    pass
+
+class ResponseAdmin(admin.ModelAdmin):
+    list_display = ('poll', 'user', 'id')
+    pass
+
+admin.site.register(Poll, PollAdmin)
+admin.site.register(Question, QuestionAdmin)
 admin.site.register(Group)
 admin.site.register(UserInfo, UserInfoAdmin)
-admin.site.register(Choice)
-admin.site.register(Response)
+admin.site.register(Response, ResponseAdmin)
 
 admin.site.unregister(User)
 
@@ -35,7 +46,7 @@ class UserResource(resources.ModelResource):
 
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
-    list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
+    list_display = ('username', 'id', 'is_active', 'date_joined', 'is_staff')
 
 
 admin.site.register(User, UserAdmin)

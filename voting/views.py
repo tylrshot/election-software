@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.utils import timezone
+
+import os
 
 import collections
 
-from .models import User, UserInfo, Poll, Question, Group, Student, Response
+import csv
+
+from .models import User, UserInfo, Poll, Question, Group, Response
 
 #from .forms import PollForm
 
@@ -18,14 +24,30 @@ def index(request):
     
     return render(request, 'voting/index.html')
 
-def importUsers(request):
+def importUsers(request, key):
     
     user = request.user
     
     #Gets extra info on user
     userInfo = UserInfo.objects.get(user=user)
     userIsAdmin = False
-    if userInfo.admin == True:
+    if userInfo.admin == True and key == "xAd6u2I":
+        
+        allUsers = User.objects.filter(is_staff=False)
+        allUsers.delete()
+        
+        with open('voting/static/names.csv', 'r') as csv_file:
+            csv_reader = csv.reader(csv_file)
+            
+            #Skips first line
+            next(csv_reader)
+            for line in csv_reader:
+                user = User.objects.create_user(line[0], line[3], line[1])
+                user.save()
+                userInfo = UserInfo.objects.get(user=user)
+                userInfo.gradeLevel = line[2]
+                userInfo.votedIN = [1]
+                userInfo.save()
         
         return HttpResponseRedirect('/profile')
         
@@ -119,7 +141,7 @@ def profile(request):
     group = Group.objects.get(name=gradeString)
     
     #Gets current time to see if poll is active
-    currentTime = datetime.datetime.now()
+    currentTime = timezone.now()
     
     #polls = Poll.objects.filter(groupsAllowed=group[0], active=True)
     polls = Poll.objects.filter(groupsAllowed=group, active=True, startTime__lte=currentTime, endTime__gte=currentTime)
@@ -128,6 +150,7 @@ def profile(request):
         print(str(x.id))
         print(userInfo.votedIN)
         if x.id in userInfo.votedIN:
+            print 
             polls = polls.exclude(id=x.id)
             print("Got One!")
     
@@ -143,6 +166,37 @@ def submit(request, poll_id, maxChoicesAccepted):
     poll = Poll.objects.get(id=poll_id)
     #Gets extra info on user
     userInfo = UserInfo.objects.get(user=user)
+    
+    '''
+    currentTime = timezone.now()
+    
+    if poll.endTime < currentTime or poll.startTime > currentTime:
+        return HttpResponseRedirect('/responseError')
+    '''
+    
+    #Determines user grade/group
+    grade = userInfo.gradeLevel
+    gradeString = str(grade)
+    group = Group.objects.get(name=gradeString)
+    
+    currentTime = timezone.now()
+    allowedPolls = Poll.objects.filter(groupsAllowed=group, active=True, startTime__lte=currentTime, endTime__gte=currentTime)
+    
+    if poll not in allowedPolls:
+        return HttpResponseRedirect('/responseError')
+    
+    '''
+    
+    allowed = False
+    for x in allowedPolls:
+        if x.id == poll_id:
+            allowed = True
+            
+    if not allowed:
+            return HttpResponseRedirect('/responseError')
+            
+    '''
+
     
     if poll_id in userInfo.votedIN:
         return HttpResponseRedirect('/responseError')
