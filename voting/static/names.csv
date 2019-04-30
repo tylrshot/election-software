@@ -1,3 +1,7 @@
-﻿GTID,last_name,grade,email
-4315617008,Schott,12,student@lumpkinschools.com
-123456789,Lincoln,12,student@lumpkinschools.com
+GTID	last_name	grade	email
+4315617008	Schott	12	student@lumpkinschools.com
+123456789	Lincoln	12	student@lumpkinschools.com
+Wilbert	Remirez	12	student@lumpkinschools.com
+Najja	Hughey	10	student@lumpkinschools.com
+McKinley	Johnson	12	student@lumpkinschools.com
+Sparkle	Cummigs	12	student@lumpkinschools.com
