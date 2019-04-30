@@ -24,6 +24,10 @@ def index(request):
     
     return render(request, 'voting/index.html')
 
+def success(request):
+    
+    return render(request, 'voting/success.html')
+
 def importUsers(request, key):
     
     user = request.user
