@@ -46,7 +46,7 @@ def importUsers(request, key):
                 user.save()
                 userInfo = UserInfo.objects.get(user=user)
                 userInfo.gradeLevel = line[2]
-                userInfo.votedIN = [1]
+                userInfo.votedIN = [0]
                 userInfo.save()
         
         return HttpResponseRedirect('/profile')
@@ -246,7 +246,7 @@ def submit(request, poll_id, maxChoicesAccepted):
     userInfo.save()
     
 #FIXME remove comment
-    #logout(request)
+    logout(request)
     return HttpResponseRedirect('/')
 
 def poll(request, poll_id):
