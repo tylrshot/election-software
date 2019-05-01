@@ -76,7 +76,7 @@ def createNewUser(request):
     
     return render(request, 'voting/newUser.html', args)
 
-def importUsers(request, key):
+def importUsers(request, key, sheetNumber):
     
     user = request.user
     
@@ -85,10 +85,10 @@ def importUsers(request, key):
     userIsAdmin = False
     if userInfo.admin == True and key == "xAd6u2I":
         
-        allUsers = User.objects.filter(is_staff=False)
-        allUsers.delete()
+        #allUsers = User.objects.filter(is_staff=False)
+        #allUsers.delete()
         
-        with open('voting/static/names.csv', 'r') as csv_file:
+        with open('voting/static/Sheet' + sheetNumber + '.csv', 'r') as csv_file:
             csv_reader = csv.reader(csv_file)
             
             #Skips first line

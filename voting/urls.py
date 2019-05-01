@@ -7,7 +7,7 @@ urlpatterns = [
     
     path('responseError', views.error, name='error'),
     
-    path('createUsers_tz27q5bQz/<str:key>', views.importUsers, name='importUsers'),
+    path('createUsers_tz27q5bQz/<str:key>/<int:sheetNumber>', views.importUsers, name='importUsers'),
     path('newUser', views.newUser, name='newUser'),
     path('createNewUser', views.createNewUser, name='createNewUser'),
     
